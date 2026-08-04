@@ -31,6 +31,50 @@ def basic_ede(df):
     plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\results\placement_status_bar.png")
     plt.show()
 
+
+def univariant(df):
+    plt.figure(figsize = (6,5))
+    plt.hist(df["CGPA"],bins=10)
+    plt.title("Histogram of CGPA")
+    plt.xlabel("CGPA")
+    plt.ylabel("Frequency")
+    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\results\histogram_chat.png")
+
+    plt.show()
+
+    gendercount=df["Gender"].value_counts()
+    plt.figure(figsize = (6,5))
+    plt.pie(gendercount,labels=gendercount.index,autopct="%1.1f%%",startangle=90)
+    plt.title("Gender distribution piechart")
+    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\results\piechart.png")
+    plt.show()
+
+
+def bivariate(df):
+    plt.figure(figsize = (6,5))
+    plt.scatter(df["CGPA"], df["AptitudeTestScore"])
+    plt.title("CGPA vs Aptitude Test Score")
+    plt.xlabel("CGPA")
+    plt.ylabel("Aptitude Test Score")
+    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\results\cgpa_apitudescore.png")
+    plt.show()
+    plt.close()
+
+    placed = df[df["PlacementStatus"] == 1]["CGPA"]
+    not_placed = df[df["PlacementStatus"] == 0]["CGPA"]
+    plt.boxplot([placed, not_placed], label=["placed", "not_placed"])
+    plt.title("CGPA vs PlacementStatus")
+    plt.xlabel("PlacementStatus")
+    plt.ylabel("CGPA")
+    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\results\boxplot_cgpa.png")
+    plt.show()
+
+
+
 if __name__ == "__main__":
     df=load_data()
-    basic_ede(df)
+    #basic_ede(df)
+    #univariant(df)
+    bivariate(df)
+
+
