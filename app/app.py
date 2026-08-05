@@ -24,6 +24,9 @@ def dataset():
         columns=df.columns.tolist(),
         data=df.head(10).values.tolist()   # Display first 10 rows
     )
+@app.route("/eda")
+def eda():
+    return render_template("eda.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

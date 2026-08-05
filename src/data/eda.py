@@ -1,6 +1,18 @@
+from statistics import correlation
+
+import pandas
+
 from src.data.load_data import load_data
 import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 
+import os
+
+os.makedirs(
+    r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\app\static\charts",
+    exist_ok=True
+)
 def basic_ede(df):
     print(df.head())
     print("first 5 rows")
@@ -28,7 +40,7 @@ def basic_ede(df):
 
     plt.xlabel("Placement Status")
     plt.ylabel("Number of Records")
-    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\results\placement_status_bar.png")
+    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\app\static\charts\placement_status_bar.png")
     plt.show()
 
 
@@ -38,7 +50,7 @@ def univariant(df):
     plt.title("Histogram of CGPA")
     plt.xlabel("CGPA")
     plt.ylabel("Frequency")
-    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\results\histogram_chat.png")
+    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\app\static\charts\histogram_chat.png")
 
     plt.show()
 
@@ -46,7 +58,7 @@ def univariant(df):
     plt.figure(figsize = (6,5))
     plt.pie(gendercount,labels=gendercount.index,autopct="%1.1f%%",startangle=90)
     plt.title("Gender distribution piechart")
-    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\results\piechart.png")
+    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\app\static\charts\piechart.png")
     plt.show()
 
 
@@ -56,18 +68,29 @@ def bivariate(df):
     plt.title("CGPA vs Aptitude Test Score")
     plt.xlabel("CGPA")
     plt.ylabel("Aptitude Test Score")
-    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\results\cgpa_apitudescore.png")
+    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\app\static\charts\cgpa_apitudescore.png")
     plt.show()
     plt.close()
 
     placed = df[df["PlacementStatus"] == 1]["CGPA"]
     not_placed = df[df["PlacementStatus"] == 0]["CGPA"]
-    plt.boxplot([placed, not_placed], label=["placed", "not_placed"])
+    plt.boxplot([placed, not_placed], labels=["placed", "not_placed"])
     plt.title("CGPA vs PlacementStatus")
     plt.xlabel("PlacementStatus")
     plt.ylabel("CGPA")
-    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\results\boxplot_cgpa.png")
+    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\app\static\charts\boxplot_cgpa.png")
     plt.show()
+
+
+def multivariate(df):
+    data = df[["CGPA", "AptitudeTestScore", "PlacementStatus"]]
+    correlation=data.corr()
+    plt.figure(figsize = (8,6))
+    sns.heatmap(correlation,annot=True,cmap="coolwarm",fmt=".2f")
+    plt.title("correlation heatmap")
+    plt.savefig(r"C:\Users\scs87\PycharmProjects\Placementpredictsystem\app\static\charts\heatmap.png")
+    plt.show()
+    plt.close()
 
 
 
@@ -75,6 +98,7 @@ if __name__ == "__main__":
     df=load_data()
     #basic_ede(df)
     #univariant(df)
-    bivariate(df)
+    #bivariate(df)
+    multivariate(df)
 
 
